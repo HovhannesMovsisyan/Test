@@ -1,0 +1,98 @@
+﻿@model Auth.Models.User
+
+@{
+    ViewBag.Title = "Profile";
+    Auth.Models.User current = Session["CurrentUser"] as Auth.Models.User;
+    string coverPhoto = current.coverphoto != null ? "/Content/images/" + current.coverphoto : "/Content/images/back.jpg";
+    
+}
+<style>
+    body{
+        background-image:url(../../Content/images/a1.jpg);
+        background-size:contain;
+    }
+    .user-item img{
+        border-radius:50%;
+    }
+  
+</style>
+<div id="cover-section" style="background-image:url(@coverPhoto)" >
+    <div id="profile">
+        @if (current.photo == null)
+        {
+            <img class="prof-pic" src="~/Content/images/pic.png" />
+
+        }
+        else
+        {
+            <img class="prof-pic" src="~/Content/images/@current.photo" />
+
+        }
+        <h2>@current.name @current.surname</h2>
+    </div>
+</div>
+<div id="wrapper">
+    <div>
+        <input class="form-control" id="search" placeholder="Please Enter a name" />
+        <div id="result" class="row"></div>
+        <button id="allusers" type="submit" class="btn btn-success">
+            Show All Users
+        </button>
+    </div>
+</div>
+
+
+<script>
+    $("#search").on("input", function () {
+        let text = $(this).val()
+        if (!text) {
+            $("#result").empty()
+            return;
+        }
+        $.ajax({
+            type: "post",
+            url: "/User/Search",
+            data: { text },
+            success: function (res) {
+                //res  en a inch vor Response.WRite a arel C#
+                res = JSON.parse(res);
+                console.log(res)
+                $("#result").empty();
+                res.forEach((item) => {
+                    let div = $("<div></div>")
+                    div.addClass("col-md-3 user-item")
+                    div.html(`
+                        <img src="/Content/images/${item.photo}">
+                       <a href="/User/page/${item.id}" > ${item.name} ${item.surname}</a>
+
+                    `)
+
+                    $("#result").append(div)
+                })
+            }
+        })
+    })
+</script>
+<script>
+    $("#allusers").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/User/ShowAllUsers",
+            success: function (result) {
+                //console.log(typeof result)
+                console.log(result)
+               // console.log(result[1])
+                result = JSON.parse(result)
+                console.log(result)
+
+                $("#result").empty();
+                result.forEach(function (item) {
+                    let div = $("<div></div>")
+                    div.addClass("col-md-3 user-item")
+                    div.html(`<h5>${item.name} ${item.surname}</h5>`)
+                    $("#result").append(div)
+                })
+            }
+        })
+    })
+</script>

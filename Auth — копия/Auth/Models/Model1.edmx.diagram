@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d64a0c97d91541a4bd4928da83e7869e" Name="Diagram1">
+        <EntityTypeShape EntityType="TestingPlatformModel.Answers" Width="1.5" PointX="7.5" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Friends" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Messages" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Question" Width="1.5" PointX="5.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Requests" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Results" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Skills" Width="1.5" PointX="3.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.Test" Width="1.5" PointX="3" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.User" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestingPlatformModel.UserSkils" Width="1.5" PointX="6" PointY="9.125" IsExpanded="true" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Answers_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Friends_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Friends_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Messages_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Messages_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Question_Test" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Requests_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Requests_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Results_Test" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Results_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_UserSkils_Skills" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_Test_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TestingPlatformModel.FK_UserSkils_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

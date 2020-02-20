@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestingPlatformModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Answers">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="question_id" Type="Int32" />
+    <Property Name="isRight" Type="Int32" />
+    <NavigationProperty Name="Question" Relationship="Self.FK_Answers_Question" FromRole="Answers" ToRole="Question" />
+  </EntityType>
+  <EntityType Name="Friends">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from" Type="Int32" />
+    <Property Name="to" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Friends_User" FromRole="Friends" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Friends_User1" FromRole="Friends" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Messages">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="from" Type="Int32" />
+    <Property Name="to" Type="Int32" />
+    <Property Name="time" Type="Double" />
+    <Property Name="status" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Messages_User" FromRole="Messages" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Messages_User1" FromRole="Messages" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="test_id" Type="Int32" />
+    <NavigationProperty Name="Answers" Relationship="Self.FK_Answers_Question" FromRole="Question" ToRole="Answers" />
+    <NavigationProperty Name="Test" Relationship="Self.FK_Question_Test" FromRole="Question" ToRole="Test" />
+  </EntityType>
+  <EntityType Name="Requests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from" Type="Int32" />
+    <Property Name="to" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Requests_User" FromRole="Requests" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Requests_User1" FromRole="Requests" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Results">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="test_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="score" Type="Int32" />
+    <NavigationProperty Name="Test" Relationship="Self.FK_Results_Test" FromRole="Results" ToRole="Test" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Results_User" FromRole="Results" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Skills">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserSkils" Relationship="Self.FK_UserSkils_Skills" FromRole="Skills" ToRole="UserSkils" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Test">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Question" Relationship="Self.FK_Question_Test" FromRole="Test" ToRole="Question" />
+    <NavigationProperty Name="Results" Relationship="Self.FK_Results_Test" FromRole="Test" ToRole="Results" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Test_User" FromRole="Test" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="login" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="coverphoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Friends" Relationship="Self.FK_Friends_User" FromRole="User" ToRole="Friends" />
+    <NavigationProperty Name="Friends1" Relationship="Self.FK_Friends_User1" FromRole="User" ToRole="Friends" />
+    <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_User" FromRole="User" ToRole="Messages" />
+    <NavigationProperty Name="Messages1" Relationship="Self.FK_Messages_User1" FromRole="User" ToRole="Messages" />
+    <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_User" FromRole="User" ToRole="Requests" />
+    <NavigationProperty Name="Requests1" Relationship="Self.FK_Requests_User1" FromRole="User" ToRole="Requests" />
+    <NavigationProperty Name="Results" Relationship="Self.FK_Results_User" FromRole="User" ToRole="Results" />
+    <NavigationProperty Name="Test" Relationship="Self.FK_Test_User" FromRole="User" ToRole="Test" />
+    <NavigationProperty Name="UserSkils" Relationship="Self.FK_UserSkils_User" FromRole="User" ToRole="UserSkils" />
+  </EntityType>
+  <EntityType Name="UserSkils">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="skills_id" Type="Int32" />
+    <NavigationProperty Name="Skills" Relationship="Self.FK_UserSkils_Skills" FromRole="UserSkils" ToRole="Skills" />
+    <NavigationProperty Name="User" Relationship="Self.FK_UserSkils_User" FromRole="UserSkils" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Answers_Question">
+    <End Role="Question" Type="Self.Question" Multiplicity="0..1" />
+    <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="question_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Friends_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Friends">
+        <PropertyRef Name="from" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Friends_User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Friends">
+        <PropertyRef Name="to" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="from" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="to" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Question_Test">
+    <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+    <End Role="Question" Type="Self.Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="test_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="from" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requests_User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Requests">
+        <PropertyRef Name="to" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Results_Test">
+    <End Role="Test" Type="Self.Test" Multiplicity="0..1" />
+    <End Role="Results" Type="Self.Results" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Results">
+        <PropertyRef Name="test_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Results_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Results" Type="Self.Results" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Results">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserSkils_Skills">
+    <End Role="Skills" Type="Self.Skills" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserSkils" Type="Self.UserSkils" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Skills">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserSkils">
+        <PropertyRef Name="skills_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Test_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Test" Type="Self.Test" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Test">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserSkils_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserSkils" Type="Self.UserSkils" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserSkils">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestingPlatformEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Answers" EntityType="Self.Answers" />
+    <EntitySet Name="Friends" EntityType="Self.Friends" />
+    <EntitySet Name="Messages" EntityType="Self.Messages" />
+    <EntitySet Name="Question" EntityType="Self.Question" />
+    <EntitySet Name="Requests" EntityType="Self.Requests" />
+    <EntitySet Name="Results" EntityType="Self.Results" />
+    <EntitySet Name="Skills" EntityType="Self.Skills" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Test" EntityType="Self.Test" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <EntitySet Name="UserSkils" EntityType="Self.UserSkils" />
+    <AssociationSet Name="FK_Answers_Question" Association="Self.FK_Answers_Question">
+      <End Role="Question" EntitySet="Question" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Friends_User" Association="Self.FK_Friends_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Friends" EntitySet="Friends" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Friends_User1" Association="Self.FK_Friends_User1">
+      <End Role="User" EntitySet="User" />
+      <End Role="Friends" EntitySet="Friends" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_User" Association="Self.FK_Messages_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_User1" Association="Self.FK_Messages_User1">
+      <End Role="User" EntitySet="User" />
+      <End Role="Messages" EntitySet="Messages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Question_Test" Association="Self.FK_Question_Test">
+      <End Role="Test" EntitySet="Test" />
+      <End Role="Question" EntitySet="Question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_User" Association="Self.FK_Requests_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requests_User1" Association="Self.FK_Requests_User1">
+      <End Role="User" EntitySet="User" />
+      <End Role="Requests" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Results_Test" Association="Self.FK_Results_Test">
+      <End Role="Test" EntitySet="Test" />
+      <End Role="Results" EntitySet="Results" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Results_User" Association="Self.FK_Results_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Results" EntitySet="Results" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserSkils_Skills" Association="Self.FK_UserSkils_Skills">
+      <End Role="Skills" EntitySet="Skills" />
+      <End Role="UserSkils" EntitySet="UserSkils" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Test_User" Association="Self.FK_Test_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Test" EntitySet="Test" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserSkils_User" Association="Self.FK_UserSkils_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserSkils" EntitySet="UserSkils" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

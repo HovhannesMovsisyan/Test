@@ -1,0 +1,53 @@
+﻿@model Auth.Models.User
+
+@{
+    ViewBag.Title = "page";
+    Auth.Models.User item = ViewBag.prof as Auth.Models.User;
+}
+<style>
+    img {
+    vertical-align: middle;
+    border-style: none;
+    width: 150px;
+    height:150px;
+    border-radius: 50%;
+}
+</style>
+
+<h2>page</h2>
+<img src="/Content/images/@item.photo" alt="Alternate Text" />
+<h1>@item.name</h1>
+<h1>@item.surname</h1>
+@if (ViewBag.isRequestSent == 0)
+{
+    <button data-id="@item.id" class="btn btn-success add-friend">Add Friend</button>
+
+}
+else
+{
+    <button data-id="@item.id" class="btn btn-warning add-friend">Request Sent</button>
+
+}
+
+
+<script>
+    $(".add-friend").click(function () {
+        let id = $(this).attr("data-id")
+        $.ajax({
+            type: "post",
+            url: "/Friends/AddFriend",
+            data: { id },
+            success: function (r) {
+                //location.reload();'
+                $(".add-friend").removeClass(".add-friend")
+                    .removeClass("btn-success")
+                    .addClass("btn-warning")
+                    .html("Request sent....")
+
+
+
+            }
+        })
+
+    })
+</script>

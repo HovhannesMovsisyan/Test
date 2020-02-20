@@ -1,0 +1,51 @@
+﻿@model Auth.Models.Friends
+
+@{
+    ViewBag.Title = "dashboard";
+    var friends = ViewBag.friends as List<Auth.Models.User>;
+}
+<style>
+    .user-item img{
+        width:100px;
+        height:100px;
+        object-fit:cover;
+        border-radius: 50%;
+    }
+</style>
+
+<h2>Friends (@friends.Count)</h2>
+<div class="row">
+    @foreach(var item in friends)
+    {
+    <div class="col-md-3 user-item">
+        @if (item.photo == null)
+        {
+            <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" />
+
+        }
+        else
+        {
+            <img src="~/Content/images/@item.photo"/>
+        }
+        <h3>@item.name @item.surname</h3>
+        <button class="btn btn-link remove text-danger" data-id="@item.id">Remove</button>
+        <a href="/User/page/@item.id">See Profile</a>
+    </div>
+    }
+</div>
+<script>
+    $(".remove").click(function () {
+        let id = $(this).attr("data-id")
+        
+        $.ajax({
+            type: "post",
+            url: "/Friends/Remove",
+            data: { id },
+            success: function () {
+                
+                location.reload();
+            }
+        })
+    })
+</script>
+

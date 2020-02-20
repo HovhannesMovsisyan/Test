@@ -1,0 +1,216 @@
+﻿@model Auth.Models.User
+
+@{
+    ViewBag.Title = "Edit";
+    var currentUser = Session["CurrentUser"] as Auth.Models.User;
+}
+
+<img id="loader" src="~/Content/images/loader.gif" />
+
+<form method="post" action="/User/Edit">
+    <h2>Change Password</h2>
+    @if (TempData["msg"] != null)
+    {
+        <p style="color:red;">@TempData["msg"]</p>
+    }
+    <div class="form-group">
+        <label for="pwd">Current Password:</label>
+        <input type="password" class="form-control" name="oldPassword">
+    </div>
+    <div class="form-group">
+        <label for="pwd">New Password:</label>
+        <input type="password" class="form-control" name="newPassword" id="new-pas">
+    </div>
+    <div id="pas3"></div>
+    <button type="submit" class="btn btn-success">Change</button>
+    <button type="button" id="gp">Generate Password</button>
+</form>
+<div id="my-skills">
+    <h1>My Skills</h1>
+    <div class="row">
+        @foreach(var item in currentUser.UserSkils)
+        {
+            <div class="skill">
+                <p>@item.Skills.name</p>
+                <button data-id="@item.id" class="delete-skill">X</button>
+            </div>
+        }
+       
+    </div>
+    <div class="form-group" id="select-box">
+        <label>Which language do you know?</label>
+        <select id="skill-list" class="form-control">
+            @foreach(Auth.Models.Skills item in ViewBag.skills)
+            {
+                <option value="@item.id">
+                    @item.name
+                </option>
+            }
+        </select>
+    </div>
+</div>
+<form method="post" action="/User/EditLogin">
+    <h2>Change Login</h2>
+    @if (TempData["msg2"] != null)
+    {
+        <p style="color:red;">@TempData["msg2"]</p>
+    }
+    <div class="form-group">
+        <label for="pwd">Current Password:</label>
+        <input type="password" class="form-control" name="curPassword">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Current Login:</label>
+        <input type="text" class="form-control" name="oldLogin">
+    </div>
+    <div class="form-group">
+        <label for="pwd">New Login:</label>
+        <input type="text" class="form-control" name="newLogin" id="new-login">
+    </div>
+    <div id="datas"></div>
+    <button type="submit" class="btn btn-success">Change</button>
+    <button type="button" id="gl">Generate Login</button>
+
+</form>
+
+<form method="post" action="/User/uploadPhoto" enctype="multipart/form-data">
+    <h2>Upload Photo</h2>
+    <input type="file" name="file" />
+    <br/><br/>
+    <div>
+        <button>Upload</button>
+    </div>
+</form>
+<form method="post" action="/User/uploadcoverPhoto" enctype="multipart/form-data">
+    <h2>Upload Cover Photo</h2>
+    <input type="file" name="file" />
+    <br /><br />
+    <div>
+        <button>Upload</button>
+    </div>
+</form>
+<script>
+    $("#new-login").change(function () {
+        let login = $(this).val()
+        $.ajax({
+            type: "post",
+            url: "/User/checkLogin",
+            data: { login },
+            success: function (result) {
+                $("#datas").empty();
+                if (result > 0) {
+                    $("#new-login").css("border", "3px solid red")
+                    $("#gl").show()
+                } else {
+                    $("#new-login").css("border", "3px solid white")
+                    $("#gl").hide()
+                }
+                
+
+            }
+        })
+    })
+    $("#gl").click(function () {
+        let tx = $("#new-login").val()
+        $.ajax({
+            type: "post",
+            url: "/User/GenerateLogin",
+            data: {tx},
+            success: function (result) {
+                let r = JSON.parse(result)
+                console.log(r)
+                $("#datas").empty()
+                r.forEach(function (item) {
+                    let elm = $("<p></p>")
+                    elm.html(item)
+                    $("#datas").append(elm)
+                })
+
+            }
+        })
+    })
+
+    $(document).on("click", "#datas p", function () {
+        let x = $(this).html()
+        $("#new-login").val(x)
+        $("#new-login").trigger("change")
+    })
+
+    $("#new-pas").change(function () {
+        let pas = $(this).val()
+        $.ajax({
+            type: "post",
+            url: "/User/checkPass",
+            data: { pas },
+            success: function (result) {
+                $("#pas3").empty();
+                if (result > 0) {
+                    $("#new-pas").css("border", "3px solid red")
+                    $("#gp").show()
+                } else {
+                    $("#new-pas").css("border", "3px solid white")
+                    $("#gp").hide()
+                }
+
+
+            }
+        })
+    })
+
+    $("#gp").click(function () {
+        $("#loader").show()
+        $.ajax({
+            type: "post",
+            url: "/User/GeneratePassword",
+            success: function (resultt) {
+                $("#loader").hide()
+                let r1 = JSON.parse(resultt)
+                console.log(r1)
+                $("#pas3").empty()
+                r1.forEach(function (itemm) {
+                    let elm1 = $("<p></p>")
+                    elm1.html(itemm)
+                    $("#pas3").append(elm1)
+                })
+
+            }
+        })
+    })
+
+    $(document).on("click", "#pas3 p", function () {
+        let xx = $(this).html()
+        $("#new-pas").val(xx)
+        $("#new-pas").trigger("change")
+    })
+
+    $("#skill-list").change(function () {
+        let cur = $(this).val()
+        $.ajax({
+            type: "post",
+            url: "/User/AddSkill",
+            data: { cur },
+            success: function (result) {
+                if (result == 0) {
+                    alert("ERROR")
+                } else {
+                    location.reload();
+                }
+               
+             
+            }
+        })
+    })
+
+    $(".delete-skill").click(function () {
+        let id = $(this).attr("data-id")
+        $.ajax({
+            type: "post",
+            url: "/User/DeleteSkill",
+            data: { id },
+            success: function (result) {
+                location.reload();
+             
+            }
+        })
+    })
+</script>

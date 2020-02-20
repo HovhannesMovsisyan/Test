@@ -1,0 +1,66 @@
+﻿@model Auth.Models.Requests
+
+@{
+    ViewBag.Title = "Requests";
+    var current = Session["CurrentUser"] as  Auth.Models.User ;
+}
+<div class="container">
+    <h2>Requests - @current.Requests1.Count</h2>
+    <table class="table table-dark table-bordered">
+        <tr>
+            <th>User</th>
+            <th>Actions</th>              
+        </tr>
+        @foreach(var item in current.Requests1)
+        {
+         <tr>
+             <td>@item.User.name @item.User.surname</td>
+             <td>
+                 <button class="btn btn-success accept" data-id="@item.User.id">Accept</button>
+                 <button class="btn btn-danger refuse" data-id="@item.User.id">Refuse</button>
+
+             </td>
+
+         </tr>
+        }
+    </table>
+
+</div>
+<script>
+    $(".refuse").click(function () {
+        let id = $(this).attr("data-id")
+        let elm = $(this);
+        $.ajax({
+            type: "post",
+            url: "/Friends/Refuse",
+            data: { id },
+            success: function () {
+                let c = +$(".request-count").attr("data-id")
+                c--;
+                if (c > 0) {
+                    $(".request-count").html(`(${c})`)
+                } else {
+                    $(".request-count").empty();
+                }
+                elm.parents("tr").remove();
+            }
+        })
+    })
+</script>
+<script>
+    $(".accept").click(function () {
+        let id = $(this).attr("data-id")
+        
+        $.ajax({
+            type: "post",
+            url: "/Friends/Accept",
+            data: { id },
+            success: function () {
+                location.reload();
+            }
+            
+        })
+    })
+</script>
+
+

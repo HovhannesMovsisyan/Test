@@ -1,0 +1,245 @@
+﻿@model Auth.Models.Friends
+
+@{
+    ViewBag.Title = "messenger";
+    var friends = ViewBag.friends as List<Auth.Models.User>;
+    var u = Session["CurrentUser"] as Auth.Models.User;
+
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<!DOCTYPE html>
+<html class=''>
+<head>
+
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+
+    <script src="https://use.typekit.net/hoy3lrg.js"></script>
+    <script>try { Typekit.load({ async: true }); } catch (e) { }</script>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link href="~/Content/style.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!--
+
+    A concept for a chat interface.
+
+    Try writing a new message! :)
+
+
+    Follow me here:
+    Twitter: https://twitter.com/thatguyemil
+    Codepen: https://codepen.io/emilcarlsson/
+    Website: http://emilcarlsson.se/
+
+    -->
+
+    <div id="frame">
+        <input type="hidden" id="me" value="@u.id">
+
+        <div id="sidepanel">
+            <div id="profile">
+                <div class="wrap">
+                    @if (u.photo == null)
+                    {
+                        <a href="/User/page/@u.id">
+                            <img id="profile-img" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" class="online" alt="" />
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/User/page/@u.id">
+                            <img src="~/Content/images/@u.photo" />
+                        </a>
+                    }
+
+                    <p>@u.name @u.surname</p>
+                    <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                    <div id="status-options">
+                        <ul>
+                            <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+                            <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+                            <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
+                            <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+                        </ul>
+                    </div>
+                    <div id="expanded">
+                        <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
+                        <input name="twitter" type="text" value="mikeross" />
+                        <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
+                        <input name="twitter" type="text" value="ross81" />
+                        <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
+                        <input name="twitter" type="text" value="mike.ross" />
+                    </div>
+                </div>
+            </div>
+            <div id="search">
+                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+                <input type="text" placeholder="Search contacts..." />
+            </div>
+            <div id="contacts">
+                <ul>
+                    @foreach (var item in friends)
+                    {
+                        <li class="contact" data-id="@item.id">
+                            <div class="wrap">
+                                <span class="contact-status online"></span>
+                                @if (item.photo == null)
+                                {
+                                    <a href="/User/page/@item.id">
+                                        <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="/User/page/@item.id">
+                                        <img src="~/Content/images/@item.photo" />
+                                    </a>
+                                }
+
+                                <div class="meta">
+                                    <p class="name">@item.name @item.surname</p>
+                                    <p class="preview">Click Here To Start Chat.</p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+
+
+                </ul>
+            </div>
+            <div id="bottom-bar">
+                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="contact-profile">
+                <img src="~/Content/images/@u.photo" alt="" />
+                <p>@u.name @u.surname</p>
+                <div class="social-media">
+                    <a href="http://www.facebook.com" class="fa fa-facebook" aria-hidden="true"></a>
+                    <a href="http://www.twitter.com" class="fa fa-twitter" aria-hidden="true"></a>
+                    <a href="http://www.instagram.com" class="fa fa-instagram" aria-hidden="true"></a>
+                </div>
+            </div>
+            <div class="messages">
+                
+                <ul>
+                   
+                </ul>
+            </div>
+            <div class="message-input">
+                <div class="wrap">
+                    <input id="namak" type="text" placeholder="Write your message..." />
+                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                    <button class="sent">send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    let current_chat;
+    $(".contact").click(function () {
+        current_chat = $(this).attr("data-id");
+
+        $.ajax({
+            type: "post",
+            url: "/Friends/Seen",
+            data: { current_chat }
+            
+
+        })
+
+
+        getMessages();
+        $(".contact").removeClass("active-user")
+        $(this).addClass("active-user")
+
+    })
+
+    $(".sent").click(function () {
+        send();
+    })
+    $("#namak").keydown(function (e) {
+        if (e.key == "Enter") {
+            send() 
+            
+        }
+    })
+
+
+
+    function send() {
+        let namak = $("#namak").val();
+        $.ajax({
+            type:"post",
+            url:"/Friends/SendMessage",
+            data: {namak, current_chat},
+            success: function(r){
+                $("#namak").val("")    
+            }
+        })
+    }
+
+
+    let interval 
+    let me = $("#me").val();
+    function getMessages() {
+        clearInterval(interval);
+                    $(".messages ul").empty();
+
+        interval = setInterval(() => {
+            $.ajax({
+                type: "post",
+                url: "/Friends/GetMessages",
+                data: { current_chat },
+                success: function (r) {
+                    r=JSON.parse(r)
+                  //  console.log(r)
+                    r.forEach(item => {
+                        let str = "#n" + item.id
+                        if ($(str).length > 0) {
+                            return;
+                        }
+                       
+                        let elm = $(`<li></li>`)
+                        elm.attr("id", "n"+item.id)
+                        if (item.from == me) {
+                            elm.addClass("sent")
+                        } else {
+                            elm.addClass("replies")
+                        }
+
+                        elm.append(`<p>${item.text}</p>`)
+                        elm.appendTo(".messages ul")
+                        $(".messages").animate({
+                            scrollTop: 1000000
+                        })
+                    })
+
+                }
+            })
+        }, 2000)
+    }
+</script>

@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Add";
+}
+<link rel="stylesheet" href="~/Content/test.css" />
+<div id="test">
+    <h2>ADD NEW TEST</h2>
+
+    <button class="add-quest btn btn-danger">Add Question</button>
+    <button class="save-test btn btn-danger">Save Test</button>
+    <br />
+    <br />
+    <input class="form-control" id="name" placeholder="please enter the name of the test" />
+    <input class="form-control" id="pass" placeholder="please choose password (optional)" />
+
+    <div id="content"></div>
+
+
+</div>
+
+
+<script>
+    $(".save-test").click(function () {
+        //this  -> .save-test BUTTON
+        let test = {}
+        test.name = $("#name").val()
+        test.Question = [];
+        test.password = $("#pass").val()
+        $(".quest").each(function () {
+            //this => hertakan .quest div
+            let quest = {}
+            quest.text = $(this).find("textarea").val()
+            quest.Answers = []
+
+            $(this).find(".answer").each(function () {
+                //this => answer INPUT
+                let ans = {}
+                ans.text = $(this).val()
+                ans.isRight = +$(this).hasClass("right")
+                quest.Answers.push(ans)
+            })
+
+            test.Question.push(quest)
+        })
+        $.ajax({
+            type: "post",
+            url: "/Test/save",
+            contentType: "application/json",
+            data: JSON.stringify(test),
+            success: function (r) {
+                location.reload();
+            }
+
+        })
+
+
+    })
+    $(document).on("dblclick", ".answer", function () {
+        $(this).parents(".answers").find(".right").removeClass("right")
+        $(this).addClass("right")
+    })
+    $(document).on("click",".add-ans",function () {
+        $(this).parent().next().append(`
+            <div>
+              <input class="answer form-control"/>
+              <button class ="del-ans btn btn-sm btn-info">Delete answer</button>
+            </div><br><br>
+
+            `)
+    })
+    $(document).on("click", ".del-ans", function () {
+        $(this).parent().remove()
+        
+    })
+    $(document).on("click", ".del-quest", function () {
+        $(this).parents(".quest").remove()
+
+    })
+    $(".add-quest").click(function () {
+        $("#content").append(`
+
+            <div class ="quest">
+                <div class ="row">
+                    <div class ="col-md-6">
+                         <p>Please add a question</p>
+                          <button class ="add-ans btn btn-sm btn-info">Add Answer</button>
+                          <br><br>
+                          
+
+                        <textarea class ="form-control" rows="7"></textarea>
+                        <button class ="del-quest btn btn-sm btn-info">Delete Question</button>
+                    </div>
+                    <div class ="col-md-6 answers" >
+                        <p>Please Add Yours Answers Here</p>
+                    </div>
+                </div>
+                
+            </div>
+        `)
+    })
+
+   
+</script>

@@ -1,0 +1,94 @@
+﻿@model Auth.Models.Test
+
+@{
+    ViewBag.Title = "pass";
+    Auth.Models.Test current = ViewBag.data as Auth.Models.Test;
+   
+}
+<style>
+
+li.quest {
+    background: #FFC107;
+    padding: 20px;
+    margin: 31px;
+    list-style: none;
+    font-size: 2.5em;
+    text-align:center;
+    font-weight: bold;
+}
+.answers li {
+    background: #fff;
+    padding: 10px;
+    margin: 20px;
+    text-align: center;
+    cursor:pointer;
+    transition:1s;
+    list-style: none;
+    font-size:22px;
+}
+.answers li:hover, .selected {
+    background:yellowgreen!important;
+}
+</style>
+<h2>You are passing test - @current.name </h2>
+<div>
+    <h1 class="text-danger display-1 result"></h1>
+    <ul>
+        @foreach (var item in current.Question)
+        {
+            <li data-question-id="@item.id" class="quest">
+                @item.text
+                <ul type="1" class="answers">
+                    @foreach (var ans in item.Answers)
+                    {
+                        <li data-answer-id="@ans.id">
+                            @ans.text
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+    <button class="btn btn-success btn-lg btn-finish">FINISH</button>
+   
+
+</div>
+<script>
+    $(".answers li").click(function () {
+        $(this).siblings().removeClass("selected")
+        $(this).addClass("selected")
+    })
+    $(".btn-finish").click(function () {
+        let obj = {}
+        obj.Question = []
+        $(".quest").each(function () {
+            let x = {}
+            x.id = $(this).attr("data-question-id")
+            x.Answers = []
+            $(this).find("li").each(function () {
+                if ($(this).hasClass("selected")) {
+                    let y = {}
+                    y.id = $(this).attr("data-answer-id")
+                    x.Answers.push(y)
+                }
+            })
+
+
+            obj.Question.push(x)
+            
+        })
+
+        $.ajax({
+            type: "post",
+            url: "/Test/check",
+            contentType: "application/json",
+            data: JSON.stringify(obj),
+            success: function (r) {
+                console.log(r)
+                $(".result").html(r)
+               
+            }
+     
+        })
+    })
+</script>
